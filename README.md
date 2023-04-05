@@ -64,3 +64,46 @@ let insertShitArray = (arr, value) => {
 insertShitArray(arr, 7);
 insertShitArray(arr2, 99)
 ```
+
+# Challenge Title
+binary Search
+
+## Whiteboard Process
+
+
+![binary-white-board](https://user-images.githubusercontent.com/105818064/230225677-aa7f6d79-1fe2-4906-ad82-2bc6ee74145f.jpeg)
+
+
+
+## Approach & Efficiency
+This is similar to searching through a dictionary so I just divided the array and half. Then guess and check. Big O is o(log n)
+
+## Solution
+```
+let sampleArr = [-131, -82, 0, 27, 42, 68, 179];
+
+let otherArr = [4, 8, 14, 16, 23, 42];
+
+function binarySearch(sortedArray, searchKey) {
+  let start = 0;
+  let end = sortedArray.length - 1;
+
+  while (start <= end) {
+    const mid = Math.floor((start + end) / 2);
+    const midValue = sortedArray[mid];
+
+    if (midValue === searchKey) {
+      return mid;
+    } else if (midValue < searchKey) {
+      start = mid + 1;
+    } else {
+      end = mid - 1;
+    }
+  }
+
+  return -1; // indicates searchKey is not in sortedArray
+}
+
+console.log(binarySearch(sampleArr, 42)) // returns 4
+console.log(binarySearch(otherArr, 15)) // returns -1
+```
