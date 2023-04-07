@@ -113,7 +113,7 @@ fibonacci sequence 2 ways
 
 ## Whiteboard Process
 
-![fibonacci-white-board](https://user-images.githubusercontent.com/105818064/230518765-7784bdf3-7bdb-4ccb-a1eb-4ecff70e9351.png)
+![fibonacci-white-board](https://user-images.githubusercontent.com/105818064/230519005-9fd62a61-dbc4-436b-91f5-ee8e5b0e8d0c.jpeg)
 
 
 ## Approach & Efficiency
