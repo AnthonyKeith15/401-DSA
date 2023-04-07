@@ -107,3 +107,36 @@ function binarySearch(sortedArray, searchKey) {
 console.log(binarySearch(sampleArr, 42)) // returns 4
 console.log(binarySearch(otherArr, 15)) // returns -1
 ```
+
+# Challenge Title
+fibonacci sequence 2 ways
+
+## Whiteboard Process
+
+![fibonacci-white-board](https://user-images.githubusercontent.com/105818064/230518765-7784bdf3-7bdb-4ccb-a1eb-4ecff70e9351.png)
+
+
+## Approach & Efficiency
+I had to google what the fibonacci sequence was. Thankfully ive seen a pattern like that before
+big O of recursive is O(2^n)
+big O of iterative is O(n)
+
+## Solution
+```
+function fibonacciRecursive(n) {
+  if (n < 2) {
+    return n;
+  }
+  return fibonacciRecursive(n-1) + fibonacciRecursive(n-2);
+}
+
+function fibonacciIterative(n) {
+  let prev = 0, curr = 1;
+  for (let i = 2; i <= n; i++) {
+    let next = prev + curr;
+    prev = curr;
+    curr = next;
+  }
+  return curr;
+}
+```
