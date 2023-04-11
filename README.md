@@ -145,6 +145,7 @@ function fibonacciIterative(n) {
 Linked List
 
 ## Whiteboard Process
+![linked-list-whiteboard](https://user-images.githubusercontent.com/105818064/231247440-a02d6327-904f-4c2a-b2ab-5220d17b6028.jpeg)
 
 
 
