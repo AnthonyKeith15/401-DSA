@@ -140,3 +140,174 @@ function fibonacciIterative(n) {
   return curr;
 }
 ```
+
+# Challenge Title
+Linked List
+
+## Whiteboard Process
+
+
+
+
+## Approach & Efficiency
+To solve the problem, we will create a linked list with a node class that has a value and a next pointer. We will then implement methods to append nodes to the end of the list, insert nodes before a specific value, and insert nodes after a specific value.
+
+The Time and Space Complexity is O(N)
+
+## Solution
+```
+class Node {
+  constructor(value) {
+    this.value = value;  // The value of the node.
+    this.next = null;  // The reference to the next node in the list.
+  }
+}
+
+class LinkedList {
+  constructor() {
+    this.head = null;  // The first node in the list (also known as the head).
+  }
+
+  // This method adds a new node with the given value to the end of the list.
+  append(value) {
+    const new_node = new Node(value);
+    if (!this.head) {  // If the list is empty, make this node the head.
+      this.head = new_node;
+    } else {
+      // Traverse the list until we find the last node (i.e., the one with no next node).
+      let current_node = this.head;
+      while (current_node.next) {
+        current_node = current_node.next;
+      }
+      // Add the new node to the end of the list.
+      current_node.next = new_node;
+    }
+  }
+
+  // This method adds a new node with the given new_value before the first node with the given value.
+  insertBefore(value, new_value) {
+    const new_node = new Node(new_value);
+    if (!this.head) {  // If the list is empty, we can't insert anything before a value.
+      throw new Error("Linked List is empty");
+    }
+    if (this.head.value === value) {  // If the value to insert before is the head, update the head.
+      new_node.next = this.head;
+      this.head = new_node;
+      return;
+    }
+    // Traverse the list until we find the node with the value to insert before.
+    let current_node = this.head;
+    while (current_node.next) {
+      if (current_node.next.value === value) {
+        // Insert the new node before the node with the given value.
+        new_node.next = current_node.next;
+        current_node.next = new_node;
+        return;
+      }
+      current_node = current_node.next;
+    }
+    // If we reach this point, the value to insert before was not found in the list.
+    throw new Error(`Value ${value} not found in Linked List`);
+  }
+
+  // This method adds a new node with the given new_value after the first node with the given value.
+  insertAfter(value, new_value) {
+    const new_node = new Node(new_value);
+    if (!this.head) {  // If the list is empty, we can't insert anything after a value.
+      throw new Error("Linked List is empty");
+    }
+    // Traverse the list until we find the node with the given value.
+    let current_node = this.head;
+    while (current_node) {
+      if (current_node.value === value) {
+        // Insert the new node after the node with the given value.
+        new_node.next = current_node.next;
+        current_node.next = new_node;
+        return;
+      }
+      current_node = current_node.next;
+    }
+    // If we reach this point, the value to insert after was not found in the list.
+    throw new Error(`Value ${value} not found in Linked List`);
+  }
+}
+
+module.exports = {LinkedList}
+```
+
+## Tests
+```
+const { LinkedList } = require("./LinkedList.js");
+
+describe("Linked List", () => {
+  let linked_list;
+
+  beforeEach(() => {
+    linked_list = new LinkedList();
+  });
+
+  test("Can successfully add a node to the end of the linked list", () => {
+    linked_list.append(1);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next).toBeNull();
+
+    linked_list.append(2);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(2);
+    expect(linked_list.head.next.next).toBeNull();
+  });
+
+  test("Can successfully add multiple nodes to the end of a linked list", () => {
+    linked_list.append(1);
+    linked_list.append(2);
+    linked_list.append(3);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(2);
+    expect(linked_list.head.next.next.value).toBe(3);
+    expect(linked_list.head.next.next.next).toBeNull();
+  });
+
+  test("Can successfully insert a node before a node located in the middle of a linked list", () => {
+    linked_list.append(1);
+    linked_list.append(2);
+    linked_list.append(4);
+    linked_list.insertBefore(2, 3);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(3);
+    expect(linked_list.head.next.next.value).toBe(2);
+    expect(linked_list.head.next.next.next.value).toBe(4);
+    expect(linked_list.head.next.next.next.next).toBeNull();
+  });
+
+  test("Can successfully insert a node before the first node of a linked list", () => {
+    linked_list.append(1);
+    linked_list.insertBefore(1, 0);
+    expect(linked_list.head.value).toBe(0);
+    expect(linked_list.head.next.value).toBe(1);
+    expect(linked_list.head.next.next).toBeNull();
+  });
+
+  test("Can successfully insert after a node in the middle of the linked list", () => {
+    linked_list.append(1);
+    linked_list.append(2);
+    linked_list.append(4);
+    linked_list.insertAfter(2, 3);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(2);
+    expect(linked_list.head.next.next.value).toBe(3);
+    expect(linked_list.head.next.next.next.value).toBe(4);
+    expect(linked_list.head.next.next.next.next).toBeNull();
+  });
+
+  test("Can successfully insert a node after the last node of the linked list", () => {
+    linked_list.append(1);
+    linked_list.append(2);
+    linked_list.insertAfter(2, 3);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(2);
+    expect(linked_list.head.next.next.value).toBe(3);
+    expect(linked_list.head.next.next.next).toBeNull();
+  });
+});
+
+```
