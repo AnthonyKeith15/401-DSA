@@ -545,3 +545,333 @@ describe('Methods', () => {
   });
 });
 ```
+
+# Challenge Title
+Zipper Two Linked List
+
+## Whiteboard Process
+
+![Zipper](https://user-images.githubusercontent.com/105818064/231579770-73a82ca0-5501-48b8-a8c8-ad20a6f4fb2d.jpeg)
+
+
+
+## Approach & Efficiency
+The approach I used iterates over both input lists simultaneously, appending nodes from each list to the resulting list alternately. If one list is shorter than the other, it appends the remaining nodes of the longer list to the end of the resulting list. The function returns the resulting linked list.
+
+Space Complextity O(1)
+Time O(N)
+
+## Solution
+```
+class Node {
+  constructor(value) {
+    this.value = value;  // The value of the node.
+    this.next = null;  // The reference to the next node in the list.
+  }
+}
+
+class LinkedList {
+  constructor() {
+    this.head = null;  // The first node in the list (also known as the head).
+  }
+
+  // This method adds a new node with the given value to the end of the list.
+  append(value) {
+    const new_node = new Node(value);
+    if (!this.head) {  // If the list is empty, make this node the head.
+      this.head = new_node;
+    } else {
+      // Traverse the list until we find the last node (i.e., the one with no next node).
+      let current_node = this.head;
+      while (current_node.next) {
+        current_node = current_node.next;
+      }
+      // Add the new node to the end of the list.
+      current_node.next = new_node;
+    }
+  }
+
+  // This method adds a new node with the given new_value before the first node with the given value.
+  insertBefore(value, new_value) {
+    const new_node = new Node(new_value);
+    if (!this.head) {  // If the list is empty, we can't insert anything before a value.
+      throw new Error("Linked List is empty");
+    }
+    if (this.head.value === value) {  // If the value to insert before is the head, update the head.
+      new_node.next = this.head;
+      this.head = new_node;
+      return;
+    }
+    // Traverse the list until we find the node with the value to insert before.
+    let current_node = this.head;
+    while (current_node.next) {
+      if (current_node.next.value === value) {
+        // Insert the new node before the node with the given value.
+        new_node.next = current_node.next;
+        current_node.next = new_node;
+        return;
+      }
+      current_node = current_node.next;
+    }
+    // If we reach this point, the value to insert before was not found in the list.
+    throw new Error(`Value ${value} not found in Linked List`);
+  }
+
+  // This method adds a new node with the given new_value after the first node with the given value.
+  insertAfter(value, new_value) {
+    const new_node = new Node(new_value);
+    if (!this.head) {  // If the list is empty, we can't insert anything after a value.
+      throw new Error("Linked List is empty");
+    }
+    // Traverse the list until we find the node with the given value.
+    let current_node = this.head;
+    while (current_node) {
+      if (current_node.value === value) {
+        // Insert the new node after the node with the given value.
+        new_node.next = current_node.next;
+        current_node.next = new_node;
+        return;
+      }
+      current_node = current_node.next;
+    }
+    // If we reach this point, the value to insert after was not found in the list.
+    throw new Error(`Value ${value} not found in Linked List`);
+  }
+
+  // This method finds the kth node from the end of the list and returns its value.
+findKthFromEnd(k) {
+  if (!Number.isInteger(k) || k < 0) {
+    throw new Error("k must be a positive integer");
+  }
+  // initialize two variables
+  let slow_pointer = this.head;
+  let fast_pointer = this.head;
+  // loop through the array having the slow pointer be k spaces behind the first one
+  for (let i = 0; i < k; i++) {
+    // throws an error if it gets to the end of the list before the count end
+    if (fast_pointer.next === null) {
+      throw new Error(`There is no ${k}th element in the Linked List`);
+    }
+    fast_pointer = fast_pointer.next;
+  }
+  while (fast_pointer.next !== null) {
+    slow_pointer = slow_pointer.next;
+    fast_pointer = fast_pointer.next;
+  }
+  // return the value once it gets to the end of the list
+  
+  return slow_pointer.value;
+}
+}
+
+
+
+const firstList = new LinkedList();
+firstList.append(1);
+firstList.append(2);
+firstList.append(3);
+
+const secondList = new LinkedList();
+secondList.append("a");
+secondList.append("b");
+secondList.append("c");
+
+function zipLists(list1, list2) {
+  const result = new LinkedList();
+  let node1 = list1.head;
+  let node2 = list2.head;
+  while (node1 !== null && node2 !== null) {
+    result.append(node1.value);
+    result.append(node2.value);
+    node1 = node1.next;
+    node2 = node2.next;
+  }
+  // if either list has remaining nodes, append them to the result
+  while (node1 !== null) {
+    result.append(node1.value);
+    node1 = node1.next;
+  }
+  while (node2 !== null) {
+    result.append(node2.value);
+    node2 = node2.next;
+  }
+  return result;
+}
+
+const zippedList = zipLists(firstList, secondList);
+console.log(zippedList); // should print: 1 -> a -> 2 -> b -> 3 -> c -> null
+
+
+module.exports = { LinkedList, zipLists };
+
+```
+
+## Tests
+```
+const { LinkedList, zipLists } = require("./LinkedList.js");
+
+describe("Linked List", () => {
+  let linked_list;
+
+  beforeEach(() => {
+    linked_list = new LinkedList();
+  });
+
+  test("Can successfully add a node to the end of the linked list", () => {
+    linked_list.append(1);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next).toBeNull();
+
+    linked_list.append(2);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(2);
+    expect(linked_list.head.next.next).toBeNull();
+  });
+
+  test("Can successfully add multiple nodes to the end of a linked list", () => {
+    linked_list.append(1);
+    linked_list.append(2);
+    linked_list.append(3);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(2);
+    expect(linked_list.head.next.next.value).toBe(3);
+    expect(linked_list.head.next.next.next).toBeNull();
+  });
+
+  test("Can successfully insert a node before a node located in the middle of a linked list", () => {
+    linked_list.append(1);
+    linked_list.append(2);
+    linked_list.append(4);
+    linked_list.insertBefore(2, 3);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(3);
+    expect(linked_list.head.next.next.value).toBe(2);
+    expect(linked_list.head.next.next.next.value).toBe(4);
+    expect(linked_list.head.next.next.next.next).toBeNull();
+  });
+
+  test("Can successfully insert a node before the first node of a linked list", () => {
+    linked_list.append(1);
+    linked_list.insertBefore(1, 0);
+    expect(linked_list.head.value).toBe(0);
+    expect(linked_list.head.next.value).toBe(1);
+    expect(linked_list.head.next.next).toBeNull();
+  });
+
+  test("Can successfully insert after a node in the middle of the linked list", () => {
+    linked_list.append(1);
+    linked_list.append(2);
+    linked_list.append(4);
+    linked_list.insertAfter(2, 3);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(2);
+    expect(linked_list.head.next.next.value).toBe(3);
+    expect(linked_list.head.next.next.next.value).toBe(4);
+    expect(linked_list.head.next.next.next.next).toBeNull();
+  });
+
+  test("Can successfully insert a node after the last node of the linked list", () => {
+    linked_list.append(1);
+    linked_list.append(2);
+    linked_list.insertAfter(2, 3);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(2);
+    expect(linked_list.head.next.next.value).toBe(3);
+    expect(linked_list.head.next.next.next).toBeNull();
+  });
+});
+
+
+  describe('Find Kth From End', () => {
+    test('throws an error if k is greater than the length of the linked list', () => {
+      const linked_list = new LinkedList();
+      linked_list.append(1);
+      expect(() => linked_list.findKthFromEnd(2)).toThrowError('There is no 2th element in the Linked List');
+    });
+
+    test('throws an error if k is not a positive integer', () => {
+      const linked_list = new LinkedList();
+      linked_list.append(1);
+      expect(() => linked_list.findKthFromEnd(-1)).toThrowError('k must be a positive integer');
+      expect(() => linked_list.findKthFromEnd(1.5)).toThrowError('k must be a positive integer');
+    });
+
+    test('returns the value of the only node in the list if k is 1 and the list has size 1', () => {
+      const linked_list = new LinkedList();
+      linked_list.append(1);
+      expect(linked_list.findKthFromEnd(0)).toBe(1);
+    });
+
+    test('returns the value of the node in the middle of the list when k is not at the end', () => {
+      const linked_list = new LinkedList();
+      linked_list.append(1);
+      linked_list.append(2);
+      linked_list.append(3);
+      linked_list.append(4);
+      linked_list.append(5);
+      expect(linked_list.findKthFromEnd(3)).toBe(2);
+    });
+    });
+
+    describe("Zip Lists", () => {
+    test("Can successfully zip two empty lists", () => {
+      const list1 = new LinkedList();
+      const list2 = new LinkedList();
+      const result = zipLists(list1, list2);
+      expect(result.head).toBeNull();
+    });
+
+    test("Can successfully zip two lists of equal length", () => {
+      const list1 = new LinkedList();
+      list1.append(1);
+      list1.append(2);
+      list1.append(3);
+      const list2 = new LinkedList();
+      list2.append("a");
+      list2.append("b");
+      list2.append("c");
+      const result = zipLists(list1, list2);
+      expect(result.head.value).toBe(1);
+      expect(result.head.next.value).toBe("a");
+      expect(result.head.next.next.value).toBe(2);
+      expect(result.head.next.next.next.value).toBe("b");
+      expect(result.head.next.next.next.next.value).toBe(3);
+      expect(result.head.next.next.next.next.next.value).toBe("c");
+      expect(result.head.next.next.next.next.next.next).toBeNull();
+    });
+
+    test("Can successfully zip two lists of different lengths (list1 is longer)", () => {
+      const list1 = new LinkedList();
+      list1.append(1);
+      list1.append(2);
+      list1.append(3);
+      const list2 = new LinkedList();
+      list2.append("a");
+      list2.append("b");
+      const result = zipLists(list1, list2);
+      expect(result.head.value).toBe(1);
+      expect(result.head.next.value).toBe("a");
+      expect(result.head.next.next.value).toBe(2);
+      expect(result.head.next.next.next.value).toBe("b");
+      expect(result.head.next.next.next.next.value).toBe(3);
+      expect(result.head.next.next.next.next.next).toBeNull();
+    });
+
+    test("Can successfully zip two lists of different lengths (list2 is longer)", () => {
+      const list1 = new LinkedList();
+      list1.append(1);
+      list1.append(2);
+      const list2 = new LinkedList();
+      list2.append("a");
+      list2.append("b");
+      list2.append("c");
+      const result = zipLists(list1, list2);
+      expect(result.head.value).toBe(1);
+      expect(result.head.next.value).toBe("a");
+      expect(result.head.next.next.value).toBe(2);
+      expect(result.head.next.next.next.value).toBe("b");
+      expect(result.head.next.next.next.next.value).toBe("c");
+      expect(result.head.next.next.next.next.next).toBeNull();
+    });
+  });
+```
