@@ -312,3 +312,236 @@ describe("Linked List", () => {
 });
 
 ```
+
+# Challenge Title
+Find Kth Element from the end
+
+## Whiteboard Process
+
+![KthIntFromEnd](https://user-images.githubusercontent.com/105818064/231344854-c14193c7-3e2d-4d01-972d-28304eefe8b8.jpg)
+
+
+## Approach & Efficiency
+The approach I used has two counter variables. It loops through the array at different speeds essentially. When the First pointer gets the end the second pointer will be k steps behind that
+
+## Solution
+```
+class Node {
+  constructor(value) {
+    this.value = value;  // The value of the node.
+    this.next = null;  // The reference to the next node in the list.
+  }
+}
+
+class LinkedList {
+  constructor() {
+    this.head = null;  // The first node in the list (also known as the head).
+  }
+
+  // This method adds a new node with the given value to the end of the list.
+  append(value) {
+    const new_node = new Node(value);
+    if (!this.head) {  // If the list is empty, make this node the head.
+      this.head = new_node;
+    } else {
+      // Traverse the list until we find the last node (i.e., the one with no next node).
+      let current_node = this.head;
+      while (current_node.next) {
+        current_node = current_node.next;
+      }
+      // Add the new node to the end of the list.
+      current_node.next = new_node;
+    }
+  }
+
+  // This method adds a new node with the given new_value before the first node with the given value.
+  insertBefore(value, new_value) {
+    const new_node = new Node(new_value);
+    if (!this.head) {  // If the list is empty, we can't insert anything before a value.
+      throw new Error("Linked List is empty");
+    }
+    if (this.head.value === value) {  // If the value to insert before is the head, update the head.
+      new_node.next = this.head;
+      this.head = new_node;
+      return;
+    }
+    // Traverse the list until we find the node with the value to insert before.
+    let current_node = this.head;
+    while (current_node.next) {
+      if (current_node.next.value === value) {
+        // Insert the new node before the node with the given value.
+        new_node.next = current_node.next;
+        current_node.next = new_node;
+        return;
+      }
+      current_node = current_node.next;
+    }
+    // If we reach this point, the value to insert before was not found in the list.
+    throw new Error(`Value ${value} not found in Linked List`);
+  }
+
+  // This method adds a new node with the given new_value after the first node with the given value.
+  insertAfter(value, new_value) {
+    const new_node = new Node(new_value);
+    if (!this.head) {  // If the list is empty, we can't insert anything after a value.
+      throw new Error("Linked List is empty");
+    }
+    // Traverse the list until we find the node with the given value.
+    let current_node = this.head;
+    while (current_node) {
+      if (current_node.value === value) {
+        // Insert the new node after the node with the given value.
+        new_node.next = current_node.next;
+        current_node.next = new_node;
+        return;
+      }
+      current_node = current_node.next;
+    }
+    // If we reach this point, the value to insert after was not found in the list.
+    throw new Error(`Value ${value} not found in Linked List`);
+  }
+
+  // This method finds the kth node from the end of the list and returns its value.
+findKthFromEnd(k) {
+  if (!Number.isInteger(k) || k < 1) {
+    throw new Error("k must be a positive integer");
+  }
+  let slow_pointer = this.head;
+  let fast_pointer = this.head;
+  for (let i = 0; i < k - 1; i++) {
+    if (fast_pointer.next === null) {
+      throw new Error(`There is no ${k}th element in the Linked List`);
+    }
+    fast_pointer = fast_pointer.next;
+  }
+  while (fast_pointer.next !== null) {
+    slow_pointer = slow_pointer.next;
+    fast_pointer = fast_pointer.next;
+  }
+  return slow_pointer.value;
+}
+}
+
+
+module.exports = {LinkedList}
+```
+
+## Tests
+```
+const { LinkedList } = require("./LinkedList.js");
+
+describe("Linked List", () => {
+  let linked_list;
+
+  beforeEach(() => {
+    linked_list = new LinkedList();
+  });
+
+  test("Can successfully add a node to the end of the linked list", () => {
+    linked_list.append(1);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next).toBeNull();
+
+    linked_list.append(2);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(2);
+    expect(linked_list.head.next.next).toBeNull();
+  });
+
+  test("Can successfully add multiple nodes to the end of a linked list", () => {
+    linked_list.append(1);
+    linked_list.append(2);
+    linked_list.append(3);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(2);
+    expect(linked_list.head.next.next.value).toBe(3);
+    expect(linked_list.head.next.next.next).toBeNull();
+  });
+
+  test("Can successfully insert a node before a node located in the middle of a linked list", () => {
+    linked_list.append(1);
+    linked_list.append(2);
+    linked_list.append(4);
+    linked_list.insertBefore(2, 3);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(3);
+    expect(linked_list.head.next.next.value).toBe(2);
+    expect(linked_list.head.next.next.next.value).toBe(4);
+    expect(linked_list.head.next.next.next.next).toBeNull();
+  });
+
+  test("Can successfully insert a node before the first node of a linked list", () => {
+    linked_list.append(1);
+    linked_list.insertBefore(1, 0);
+    expect(linked_list.head.value).toBe(0);
+    expect(linked_list.head.next.value).toBe(1);
+    expect(linked_list.head.next.next).toBeNull();
+  });
+
+  test("Can successfully insert after a node in the middle of the linked list", () => {
+    linked_list.append(1);
+    linked_list.append(2);
+    linked_list.append(4);
+    linked_list.insertAfter(2, 3);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(2);
+    expect(linked_list.head.next.next.value).toBe(3);
+    expect(linked_list.head.next.next.next.value).toBe(4);
+    expect(linked_list.head.next.next.next.next).toBeNull();
+  });
+
+  test("Can successfully insert a node after the last node of the linked list", () => {
+    linked_list.append(1);
+    linked_list.append(2);
+    linked_list.insertAfter(2, 3);
+    expect(linked_list.head.value).toBe(1);
+    expect(linked_list.head.next.value).toBe(2);
+    expect(linked_list.head.next.next.value).toBe(3);
+    expect(linked_list.head.next.next.next).toBeNull();
+  });
+});
+
+describe('Methods', () => {
+  describe('Find Kth From End', () => {
+    test('throws an error if k is greater than the length of the linked list', () => {
+      const linked_list = new LinkedList();
+      linked_list.append(1);
+      expect(() => linked_list.findKthFromEnd(2)).toThrowError('There is no 2th element in the Linked List');
+    });
+
+    test('throws an error if k is not a positive integer', () => {
+      const linked_list = new LinkedList();
+      linked_list.append(1);
+      expect(() => linked_list.findKthFromEnd(-1)).toThrowError('k must be a positive integer');
+      expect(() => linked_list.findKthFromEnd(0)).toThrowError('k must be a positive integer');
+      expect(() => linked_list.findKthFromEnd(1.5)).toThrowError('k must be a positive integer');
+    });
+
+    test('returns the value of the only node in the list if k is 1 and the list has size 1', () => {
+      const linked_list = new LinkedList();
+      linked_list.append(1);
+      expect(linked_list.findKthFromEnd(1)).toBe(1);
+    });
+
+    test('returns the value of the node in the middle of the list when k is not at the end', () => {
+      const linked_list = new LinkedList();
+      linked_list.append(1);
+      linked_list.append(2);
+      linked_list.append(3);
+      linked_list.append(4);
+      linked_list.append(5);
+      expect(linked_list.findKthFromEnd(3)).toBe(3);
+    });
+
+    test('returns the value of the last node in the list when k is equal to the length of the list', () => {
+      const linked_list = new LinkedList();
+      linked_list.append(1);
+      linked_list.append(2);
+      linked_list.append(3);
+      linked_list.append(4);
+      linked_list.append(5);
+      expect(linked_list.findKthFromEnd(5)).toBe(1);
+    });
+  });
+});
+```
