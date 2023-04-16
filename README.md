@@ -875,3 +875,210 @@ describe("Linked List", () => {
     });
   });
 ```
+
+# Challenge Title
+Stack and Queue
+
+## Whiteboard Process
+
+
+![stack-queue-whiteboard](https://user-images.githubusercontent.com/105818064/232340589-13825381-b54d-4b3b-9f6d-c8fb43af76d4.png)
+
+
+
+## Approach & Efficiency
+I just need to check if the next node was null to see where I was at on the list
+
+Space Complextity O(1)
+Time O(1)
+
+## Solution
+```
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+class Stack {
+  constructor() {
+    this.top = null;
+  }
+
+  push(value) {
+    const new_node = new Node(value);
+    new_node.next = this.top;
+    this.top = new_node;
+  }
+
+  pop() {
+    if (this.is_empty()) {
+      throw new Error("Stack is empty");
+    }
+    const value = this.top.value;
+    this.top = this.top.next;
+    return value;
+  }
+
+  peek() {
+    if (this.is_empty()) {
+      throw new Error("Stack is empty");
+    }
+    return this.top.value;
+  }
+
+  is_empty() {
+    return this.top === null;
+  }
+}
+
+class Queue {
+  constructor() {
+    this.front = null;
+    this.back = null;
+  }
+
+  enqueue(value) {
+    const new_node = new Node(value);
+    if (this.is_empty()) {
+      this.front = new_node;
+      this.back = new_node;
+    } else {
+      this.back.next = new_node;
+      this.back = new_node;
+    }
+  }
+
+  dequeue() {
+    if (this.is_empty()) {
+      throw new Error("Queue is empty");
+    }
+    const value = this.front.value;
+    this.front = this.front.next;
+    if (this.front === null) {
+      this.back = null;
+    }
+    return value;
+  }
+
+  peek() {
+    if (this.is_empty()) {
+      throw new Error("Queue is empty");
+    }
+    return this.front.value;
+  }
+
+  is_empty() {
+    return this.front === null;
+  }
+}
+
+
+```
+
+## Tests
+```
+describe("Stack tests", function() {
+  it("Can push a value onto a stack", function() {
+    const stack = new Stack();
+    stack.push(1);
+    expect(stack.peek()).toEqual(1);
+  });
+
+  it("Can push multiple values onto a stack", function() {
+    const stack = new Stack();
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+    expect(stack.peek()).toEqual(3);
+  });
+
+  it("Can pop a value off the stack", function() {
+    const stack = new Stack();
+    stack.push(1);
+    const value = stack.pop();
+    expect(value).toEqual(1);
+    expect(stack.is_empty()).toBeTruthy();
+  });
+
+  it("Can empty a stack after multiple pops", function() {
+    const stack = new Stack();
+    stack.push(1);
+    stack.push(2);
+    stack.pop();
+    stack.pop();
+    expect(stack.is_empty()).toBeTruthy();
+  });
+
+  it("Can peek the next item on the stack", function() {
+    const stack = new Stack();
+    stack.push(1);
+    stack.push(2);
+    expect(stack.peek()).toEqual(2);
+  });
+
+  it("Can instantiate an empty stack", function() {
+    const stack = new Stack();
+    expect(stack.is_empty()).toBeTruthy();
+  });
+
+  it("Calling pop or peek on empty stack raises exception", function() {
+    const stack = new Stack();
+    expect(() => stack.pop()).toThrow();
+    expect(() => stack.peek()).toThrow();
+  });
+});
+
+describe("Queue tests", function() {
+  it("Can enqueue a value into a queue", function() {
+    const queue = new Queue();
+    queue.enqueue(1);
+    expect(queue.peek()).toEqual(1);
+  });
+
+  it("Can enqueue multiple values into a queue", function() {
+    const queue = new Queue();
+    queue.enqueue(1);
+    queue.enqueue(2);
+    queue.enqueue(3);
+    expect(queue.peek()).toEqual(1);
+  });
+
+  it("Can dequeue out of a queue the expected value", function() {
+    const queue = new Queue();
+    queue.enqueue(1);
+    queue.enqueue(2);
+    const value = queue.dequeue();
+    expect(value).toEqual(1);
+  });
+
+  it("Can peek into a queue, seeing the expected value", function() {
+    const queue = new Queue();
+    queue.enqueue(1);
+    queue.enqueue(2);
+    expect(queue.peek()).toEqual(1);
+  });
+
+  it("Can empty a queue after multiple dequeues", function() {
+    const queue = new Queue();
+    queue.enqueue(1);
+    queue.enqueue(2);
+    queue.dequeue();
+    queue.dequeue();
+    expect(queue.is_empty()).toBeTruthy();
+  });
+
+  it("Can instantiate an empty queue", function() {
+    const queue = new Queue();
+    expect(queue.is_empty()).toBeTruthy();
+  });
+
+  it("Calling dequeue or peek on empty queue raises exception", function() {
+    const queue = new Queue();
+    expect(() => queue.dequeue()).toThrow();
+    expect(() => queue.peek()).toThrow();
+  });
+});
+
+```
