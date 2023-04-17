@@ -1082,3 +1082,132 @@ describe("Queue tests", function() {
 });
 
 ```
+
+# Challenge Title
+PsuedoQueue
+
+## Whiteboard Process
+
+![PsuedoQueue](https://user-images.githubusercontent.com/105818064/232614991-3702ac9b-e962-4799-bf2b-a9d4cfcf596b.png)
+
+
+
+
+## Approach & Efficiency
+I used an approach similar to the tower and ring game, in order to get the items to behave like I wanted i needed to utilize the second stack and a LIFO approach on the second stack.
+
+Space/Time Complextity: O(2n)
+
+
+## Solution
+```
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+  push(element) {
+    this.items.push(element);
+  }
+  pop() {
+    if (this.items.length === 0) {
+      return "Underflow";
+    }
+    return this.items.pop();
+  }
+  peek() {
+    return this.items[this.items.length - 1];
+  }
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+
+class PseudoQueue {
+  constructor() {
+    this.stack1 = new Stack(); // Initialize first stack
+    this.stack2 = new Stack(); // Initialize second stack
+  }
+
+  // Insert an element into the PseudoQueue using a first-in, first-out approach
+  enqueue(value) {
+    // To add an element to the front of the PseudoQueue, we need to first reverse the order of elements in stack1
+    // We can do this by popping all elements from stack1 and pushing them onto stack2
+    while (!this.stack1.isEmpty()) {
+      this.stack2.push(this.stack1.pop());
+    }
+    // Once all elements are in stack2, we can push the new element onto stack1, which will add it to the front of the PseudoQueue
+    this.stack1.push(value);
+    // Finally, we need to reverse the order of elements again by popping them from stack2 and pushing them onto stack1
+    while (!this.stack2.isEmpty()) {
+      this.stack1.push(this.stack2.pop());
+    }
+    console.log(this.stack1)
+  }
+
+  // Remove and return the first element in the PseudoQueue using a first-in, first-out approach
+  dequeue() {
+    // If both stacks are empty, then the PseudoQueue is empty
+    if (this.stack1.isEmpty() && this.stack2.isEmpty()) {
+      return "Queue is empty";
+    }
+    // Otherwise, we can simply pop the top element from stack1, which will be the first element of the PseudoQueue
+    return this.stack1.pop();
+  }
+}
+
+module.exports = { PseudoQueue, Stack };
+
+```
+
+## Tests
+```
+const { PseudoQueue, Stack } = require("./PsuedoQueue.js");
+
+describe("PseudoQueue", () => {
+  let queue;
+
+  beforeEach(() => {
+    queue = new PseudoQueue();
+  });
+
+  it("should enqueue elements in first-in, first-out order", () => {
+    queue.enqueue(20);
+    queue.enqueue(15);
+    queue.enqueue(10);
+    queue.enqueue(5);
+
+    expect(queue.stack1.items).toEqual([5, 10, 15, 20]);
+  });
+
+  it("should dequeue elements in first-in, first-out order", () => {
+    queue.enqueue(20);
+    queue.enqueue(15);
+    queue.enqueue(10);
+    queue.enqueue(5);
+
+    expect(queue.dequeue()).toEqual(20);
+    expect(queue.stack1.items).toEqual([5, 10, 15]);
+    expect(queue.dequeue()).toEqual(15);
+    expect(queue.stack1.items).toEqual([5, 10]);
+    expect(queue.dequeue()).toEqual(10);
+    expect(queue.stack1.items).toEqual([5]);
+    expect(queue.dequeue()).toEqual(5);
+    expect(queue.stack1.items).toEqual([]);
+    expect(queue.dequeue()).toEqual("Queue is empty");
+  });
+
+  it("should enqueue an element after dequeuing", () => {
+    queue.enqueue(20);
+    queue.enqueue(15);
+    queue.enqueue(10);
+    queue.enqueue(5);
+
+    queue.dequeue();
+    expect(queue.stack1.items).toEqual([5, 10, 15]);
+    queue.enqueue(40);
+    expect(queue.stack1.items).toEqual([40, 5, 10, 15]);
+  });
+});
+
+
+```
