@@ -1211,3 +1211,172 @@ describe("PseudoQueue", () => {
 
 
 ```
+
+# Challenge Title
+Animal Shelter Stack and Queue
+
+## Whiteboard Process
+
+
+![Screenshot 2023-04-18 at 4 39 09 PM](https://user-images.githubusercontent.com/105818064/232927845-408d1a09-e449-4abb-adf2-1c958ea886fb.png)
+
+
+
+
+## Approach & Efficiency
+I used several if then statements to look through the list and pick the applicable animal.
+
+Space/Time Complextity: O(N)
+
+
+## Solution
+```
+class AnimalShelter {
+  constructor() {
+    // Separate arrays to hold dogs and cats
+    this.dogs = [];
+    this.cats = [];
+    // Counter to keep track of the order in which animals arrive at the shelter
+    this.order = 1;
+  }
+
+  // Method to add an animal to the shelter
+  enqueue(animal) {
+    // Set the order of arrival for the animal
+    animal.order = this.order;
+    // Increment the order counter
+    this.order++;
+
+    // Add the animal to the appropriate array based on its species
+    if (animal.species === "dog") {
+      this.dogs.push(animal);
+    } else if (animal.species === "cat") {
+      this.cats.push(animal);
+    }
+  }
+
+  // Method to remove an animal from the shelter based on preference
+  dequeue(pref) {
+    
+    // If the preference is "dog" and there are dogs in the shelter, return the first dog
+    if (pref === "dog" && this.dogs.length > 0) {
+      return this.dogs.shift();
+    // If the preference is "cat" and there are cats in the shelter, return the first cat
+    } else if (pref === "cat" && this.cats.length > 0) {
+      return this.cats.shift();
+    // If the preferred animal is not available, return the animal that has been waiting in the shelter the longest
+    } else {
+      // If there are both dogs and cats in the shelter, compare the order of arrival of the first dog and the first cat,
+      // and return the animal that has been waiting in the shelter the longest
+      if (this.dogs.length > 0 && this.cats.length > 0) {
+        if (this.dogs[0].order < this.cats[0].order) {
+          return this.dogs.shift();
+        } else {
+          return this.cats.shift();
+        }
+      // If there are only dogs or only cats in the shelter, return the first animal in the corresponding array
+      } else if (this.dogs.length > 0) {
+        return this.dogs.shift();
+      } else if (this.cats.length > 0) {
+        return this.cats.shift();
+      // If there are no animals in the shelter, return null
+      } else {
+        return null;
+      }
+    }
+  }
+}
+
+
+
+```
+
+## Tests
+```
+// Example usage:
+
+// Create a new AnimalShelter instance
+const animalShelter = new AnimalShelter();
+
+class Dog {
+  constructor(name) {
+    this.name = name;
+    this.species = "dog";
+    this.order = 1;
+  }
+}
+
+class Cat {
+  constructor(name) {
+    this.name = name;
+    this.species = "cat";
+    this.order = 1;
+  }
+}
+
+// Enqueue some animals
+animalShelter.enqueue(new Dog("Rufus"));
+animalShelter.enqueue(new Cat("Fluffy"));
+animalShelter.enqueue(new Dog("Buddy"));
+animalShelter.enqueue(new Cat("Winston"));
+
+// Check the dogs and cats arrays after enqueuing
+console.log(animalShelter.dogs); // Output: [ { name: 'Rufus', species: 'dog', order: 0 }, { name: 'Buddy', species: 'dog', order: 2 } ]
+console.log(animalShelter.cats); // Output: [ { name: 'Fluffy', species: 'cat', order: 1 }, { name: 'Winston', species: 'cat', order: 3 } ]
+
+// Dequeue some animals based on preference
+animalShelter.dequeue("dog"); // Output: { name: 'Rufus', species: 'dog', order: 0 }
+animalShelter.dequeue("cat"); // Output: { name: 'Fluffy', species: 'cat', order: 1 }
+
+// Check the dogs and cats arrays after dequeuing
+console.log(animalShelter.dogs); // Output: [ { name: 'Buddy', species: 'dog', order: 2 } ]
+console.log(animalShelter.cats); // Output: [ { name: 'Winston', species: 'cat', order: 3 } ]
+
+// Dequeue an animal without specifying a preference
+animalShelter.dequeue(); // Output: { name: 'Buddy', species: 'dog', order: 2 }
+
+// Enqueue some more animals
+animalShelter.enqueue(new Cat("Oliver"));
+animalShelter.enqueue(new Dog("Hanzo"));
+
+// Check the dogs and cats arrays after enqueuing more animals
+console.log(animalShelter.dogs); // Output: [ { name: 'Hanzo', species: 'dog', order: 4 } ]
+console.log(animalShelter.cats); // Output: [ { name: 'Winston', species: 'cat', order: 3 }, { name: 'Oliver', species: 'cat', order: 5 } ]
+
+// Dequeue an animal
+animalShelter.dequeue(); 
+
+// Check the dogs and cats arrays after dequeuing an animal
+console.log(animalShelter.dogs); // Output: [ { name: 'Hanzo', species: 'dog', order: 4 } ]
+console.log(animalShelter.cats); // Output: [ { name: 'Oliver', species: 'cat', order: 5 } ]
+
+
+
+```
+
+# Challenge Title
+
+
+## Whiteboard Process
+
+
+
+
+
+
+## Approach & Efficiency
+
+
+Space/Time Complextity: 
+
+
+## Solution
+```
+
+```
+
+## Tests
+```
+
+
+```
