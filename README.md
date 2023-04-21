@@ -1356,6 +1356,240 @@ console.log(animalShelter.cats); // Output: [ { name: 'Oliver', species: 'cat', 
 
 # Challenge Title
 
+Binary Search Tree
+
+## Whiteboard Process
+
+
+
+![Screenshot 2023-04-21 at 2 41 02 PM](https://user-images.githubusercontent.com/105818064/233738973-a69fbea4-0955-44b6-93b2-ac7ef375c41c.png)
+
+
+
+## Approach & Efficiency
+
+
+Space/Time Complextity: 
+At worst it will have to look through the entire tree. O(N)
+
+## Solution
+```
+// Define Node class with value, left child, and right child properties
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+// Define Binary Tree class with root property and pre-order, in-order, and post-order traversal methods
+class BinaryTree {
+  constructor() {
+    this.root = null;
+  }
+
+  // Depth First Traversal - Pre-order
+  preOrder() {
+    const result = [];
+
+    function traverse(node) {
+      if (node === null) return;
+
+      result.push(node.value);
+      traverse(node.left);
+      traverse(node.right);
+    }
+
+    traverse(this.root);
+
+    return result;
+  }
+
+  // Depth First Traversal - In-order
+  inOrder() {
+    const result = [];
+
+    function traverse(node) {
+      if (node === null) return;
+
+      traverse(node.left);
+      result.push(node.value);
+      traverse(node.right);
+    }
+
+    traverse(this.root);
+
+    return result;
+  }
+
+  // Depth First Traversal - Post-order
+  postOrder() {
+    const result = [];
+
+    function traverse(node) {
+      if (node === null) return;
+
+      traverse(node.left);
+      traverse(node.right);
+      result.push(node.value);
+    }
+
+    traverse(this.root);
+
+    return result;
+  }
+}
+
+// Define Binary Search Tree class that extends Binary Tree class
+class BinarySearchTree extends BinaryTree {
+  constructor() {
+    super();
+  }
+
+  // Add a new node with the given value in the correct location
+  add(value) {
+    const node = new Node(value);
+
+    if (this.root === null) {
+      this.root = node;
+      return;
+    }
+
+    let current = this.root;
+
+    while (true) {
+      if (value < current.value) {
+        if (current.left === null) {
+          current.left = node;
+          break;
+        }
+        current = current.left;
+      } else if (value > current.value) {
+        if (current.right === null) {
+          current.right = node;
+          break;
+        }
+        current = current.right;
+      } else {
+        // Value already exists in the tree
+        break;
+      }
+    }
+  }
+  
+  // Add a new node with the given value in the correct location
+add(value) {
+  // Create a new node object with the given value
+  const node = new Node(value);
+
+  // If the tree is empty, set the new node as the root
+  if (this.root === null) {
+    this.root = node;
+    return;
+  }
+
+  // Otherwise, traverse the tree to find the correct location for the new node
+  let current = this.root;
+
+  while (true) {
+    // If the value is less than the current node's value, move to the left child
+    if (value < current.value) {
+      // If the left child is null, add the new node as the left child
+      if (current.left === null) {
+        current.left = node;
+        break;
+      }
+      // Otherwise, continue traversing the left subtree
+      current = current.left;
+    }
+    // If the value is greater than the current node's value, move to the right child
+    else if (value > current.value) {
+      // If the right child is null, add the new node as the right child
+      if (current.right === null) {
+        current.right = node;
+        break;
+      }
+      // Otherwise, continue traversing the right subtree
+      current = current.right;
+    }
+    // If the value is equal to the current node's value, the value already exists in the tree
+    else {
+      break;
+    }
+  }
+}
+
+
+  // Check if the tree contains a node with the given value
+  contains(value) {
+    let current = this.root;
+
+    while (current !== null) {
+      if (value === current.value) {
+        return true;
+      } else if (value < current.value) {
+        current = current.left;
+      } else {
+        current = current.right;
+      }
+    }
+
+    return false;
+  }
+}
+```
+
+## Tests
+```
+describe('BinarySearchTree', () => {
+  let bst;
+
+  beforeEach(() => {
+    bst = new BinarySearchTree();
+    bst.add(5);
+    bst.add(3);
+    bst.add(7);
+    bst.add(2);
+    bst.add(4);
+    bst.add(6);
+    bst.add(8);
+  });
+
+  describe('contains', () => {
+    it('should return true if the tree contains the value', () => {
+      expect(bst.contains(2)).toBe(true);
+    });
+
+    it('should return false if the tree does not contain the value', () => {
+      expect(bst.contains(9)).toBe(false);
+    });
+  });
+
+  describe('preOrder', () => {
+    it('should return an array of values in pre-order traversal', () => {
+      expect(bst.preOrder()).toEqual([5, 3, 2, 4, 7, 6, 8]);
+    });
+  });
+
+  describe('inOrder', () => {
+    it('should return an array of values in in-order traversal', () => {
+      expect(bst.inOrder()).toEqual([2, 3, 4, 5, 6, 7, 8]);
+    });
+  });
+
+  describe('postOrder', () => {
+    it('should return an array of values in post-order traversal', () => {
+      expect(bst.postOrder()).toEqual([2, 4, 3, 6, 8, 7, 5]);
+    });
+  });
+});
+
+
+```
+
+# Challenge Title
+
 
 ## Whiteboard Process
 
