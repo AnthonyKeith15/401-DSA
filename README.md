@@ -1659,6 +1659,65 @@ describe('BinaryTree', () => {
 ```
 
 # Challenge Title
+Breadth-first Traversal
+
+## Whiteboard Process
+
+![Screenshot 2023-04-25 at 2 58 53 PM](https://user-images.githubusercontent.com/105818064/234413654-c5a91605-7767-4de7-bb16-af3edbe71200.png)
+
+
+
+## Approach & Efficiency
+Starting from the root node of the tree, the algorithm adds the root node to the queue, then loops over the queue while it is not empty. For each node in the queue, the algorithm adds its left and right child nodes (if they exist) to the end of the queue. Then, the algorithm visits the node (i.e., adds its value to the output list) and removes it from the front of the queue.
+
+Space/Time Complextity: 
+Time: O(n) because it must visit each node in the tree
+Space: O(w) depending on how wide the tree is 
+
+## Solution
+```
+function breadthFirst(tree) {
+  const result = [];
+  const queue = [tree];
+
+  while (queue.length > 0) {
+    const node = queue.shift();
+    result.push(node.value);
+
+    if (node.left) {
+      queue.push(node.left);
+    }
+
+    if (node.right) {
+      queue.push(node.right);
+    }
+  }
+
+  return result;
+}
+
+```
+
+## Tests
+```
+describe("breadthFirst", () => {
+  test("should return the correct order of nodes for the given tree", () => {
+    const tree = new TreeNode(2);
+    tree.left = new TreeNode(7);
+    tree.right = new TreeNode(5);
+    tree.left.left = new TreeNode(2);
+    tree.left.right = new TreeNode(6);
+    tree.right.right = new TreeNode(9);
+    tree.left.right.left = new TreeNode(5);
+    tree.left.right.right = new TreeNode(11);
+    tree.right.right.left = new TreeNode(4);
+
+    expect(breadthFirst(tree)).toEqual([2, 7, 5, 2, 6, 9, 5, 11, 4]);
+  });
+});
+```
+
+# Challenge Title
 
 
 ## Whiteboard Process
