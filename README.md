@@ -1589,6 +1589,76 @@ describe('BinarySearchTree', () => {
 ```
 
 # Challenge Title
+Binary Tree Value
+
+## Whiteboard Process
+
+
+![Screenshot 2023-04-24 at 5 06 57 PM](https://user-images.githubusercontent.com/105818064/234140991-745ee32e-3ac8-443f-8927-8d94869d0f98.png)
+
+
+
+
+## Approach & Efficiency
+
+
+Space/Time Complextity: 
+Overall, the time complexity is O(n) and the space complexity is O(n) in the worst case. However, in a balanced binary tree, the space complexity is O(log n), which is much better.
+
+## Solution
+```
+class BinaryTree {
+  constructor(value = null) {
+    this.value = value;
+    this.leftChild = null;
+    this.rightChild = null;
+  }
+
+  findMaximumValue() {
+    if (this.value === null) {
+      return null;
+    }
+
+    let maxVal = this.value;
+
+    if (this.leftChild !== null) {
+      maxVal = Math.max(maxVal, this.leftChild.findMaximumValue());
+    }
+
+    if (this.rightChild !== null) {
+      maxVal = Math.max(maxVal, this.rightChild.findMaximumValue());
+    }
+
+    return maxVal;
+  }
+}
+
+```
+
+## Tests
+```
+describe('BinaryTree', () => {
+  test('findMaximumValue returns the maximum value in the tree', () => {
+    const tree = new BinaryTree(4);
+    tree.leftChild = new BinaryTree(2);
+    tree.rightChild = new BinaryTree(6);
+    tree.leftChild.leftChild = new BinaryTree(1);
+    tree.leftChild.rightChild = new BinaryTree(3);
+    tree.rightChild.leftChild = new BinaryTree(5);
+    tree.rightChild.rightChild = new BinaryTree(7);
+
+    expect(tree.findMaximumValue()).toEqual(7);
+  });
+
+  test('findMaximumValue returns null for an empty tree', () => {
+    const tree = new BinaryTree();
+
+    expect(tree.findMaximumValue()).toBeNull();
+  });
+});
+```
+
+# Challenge Title
 
 
 ## Whiteboard Process
