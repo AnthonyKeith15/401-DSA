@@ -1589,7 +1589,7 @@ describe('BinarySearchTree', () => {
 ```
 
 # Challenge Title
-Binary Tree Value
+Binary Tree Max Value
 
 ## Whiteboard Process
 
