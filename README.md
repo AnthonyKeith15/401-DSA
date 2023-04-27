@@ -1718,6 +1718,102 @@ describe("breadthFirst", () => {
 ```
 
 # Challenge Title
+Tree Fizz-Buzz
+
+## Whiteboard Process
+
+
+![Screenshot 2023-04-26 at 8 26 12 PM](https://user-images.githubusercontent.com/105818064/234752398-d4cd1905-2599-46a2-a881-570b6e28fa35.png)
+
+
+
+
+## Approach & Efficiency
+The fizzBuzzTree function takes a k-ary tree as input and returns a new tree with the same structure but with the values modified based on the rules of FizzBuzz, by recursively traversing the tree and replacing the node values with the corresponding string values.
+
+Space/Time Complextity: 
+Time: O(n)
+Space: O(w)
+
+## Solution
+class KNode {
+  constructor(value, children = []) {
+    this.value = value;
+    this.children = children;
+  }
+}
+
+function fizzBuzzTree(root) {
+  const fizzBuzz = (value) => {
+    if (value % 3 === 0 && value % 5 === 0) {
+      return "FizzBuzz";
+    } else if (value % 3 === 0) {
+      return "Fizz";
+    } else if (value % 5 === 0) {
+      return "Buzz";
+    } else {
+      return String(value);
+    }
+  };
+
+  const helper = (node) => {
+    const newChildren = node.children.map((child) => helper(child));
+    const newValue = fizzBuzz(node.value);
+    return new KNode(newValue, newChildren);
+  };
+
+  return helper(root);
+}```
+
+```
+
+## Tests
+```
+test("returns a new tree with FizzBuzz values", () => {
+  // create a sample k-ary tree
+  const root = new KNode(1, [
+    new KNode(2, [new KNode(4), new KNode(5), new KNode(6)]),
+    new KNode(3, [new KNode(7), new KNode(15), new KNode(8)]),
+  ]);
+
+  // call fizzBuzzTree on the sample tree
+  const newRoot = fizzBuzzTree(root);
+
+  // check that the modified tree has the correct values at each node
+  expect(newRoot.value).toEqual("Fizz");
+  expect(newRoot.children[0].value).toEqual("2");
+  expect(newRoot.children[0].children[0].value).toEqual("4");
+  expect(newRoot.children[0].children[1].value).toEqual("Buzz");
+  expect(newRoot.children[0].children[2].value).toEqual("Fizz");
+  expect(newRoot.children[1].children[0].value).toEqual("7");
+  expect(newRoot.children[1].children[1].value).toEqual("FizzBuzz");
+  expect(newRoot.children[1].children[2].value).toEqual("8");
+});
+
+test("returns the original tree when all values are strings", () => {
+  // create a sample k-ary tree with string values
+  const root = new KNode("hello", [
+    new KNode("world", [new KNode("foo"), new KNode("bar")]),
+    new KNode("baz", [new KNode("qux"), new KNode("quux")]),
+  ]);
+
+  // call fizzBuzzTree on the sample tree
+  const newRoot = fizzBuzzTree(root);
+
+  // check that the modified tree has the same values as the original tree
+  expect(newRoot.value).toEqual("hello");
+  expect(newRoot.children[0].value).toEqual("world");
+  expect(newRoot.children[0].children[0].value).toEqual("foo");
+  expect(newRoot.children[0].children[1].value).toEqual("bar");
+  expect(newRoot.children[1].value).toEqual("baz");
+  expect(newRoot.children[1].children[0].value).toEqual("qux");
+  expect(newRoot.children[1].children[1].value).toEqual("quux");
+});
+
+
+```
+
+# Challenge Title
 
 
 ## Whiteboard Process
