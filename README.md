@@ -1814,8 +1814,80 @@ test("returns the original tree when all values are strings", () => {
 ```
 
 # Challenge Title
+Lab 26
+
+## Whiteboard Process
 
 
+
+
+
+
+## Approach & Efficiency
+The approach was I followed the directions
+
+Space/Time Complextity: 
+O(n^2)
+
+## Solution
+```
+function Insert(sorted, value) {
+  let i = 0;
+  while (value > sorted[i]) {
+    i++;
+  }
+  while (i < sorted.length) {
+    const temp = sorted[i];
+    sorted[i] = value;
+    value = temp;
+    i++;
+  }
+  sorted.push(value);
+}
+
+function InsertionSort(input) {
+  const sorted = [input[0]];
+  for (let i = 1; i < input.length; i++) {
+    Insert(sorted, input[i]);
+  }
+  return sorted;
+}
+
+```
+
+## Tests
+```
+// Test case 1: Empty array
+const input1 = [];
+const sorted1 = InsertionSort(input1);
+console.log(sorted1); // output: []
+
+// Test case 2: Single-element array
+const input2 = [42];
+const sorted2 = InsertionSort(input2);
+console.log(sorted2); // output: [42]
+
+// Test case 3: Array with multiple elements in random order
+const input3 = [5, 2, 4, 6, 1, 3];
+const sorted3 = InsertionSort(input3);
+console.log(sorted3); // output: [1, 2, 3, 4, 5, 6]
+
+// Test case 4: Array with duplicate elements
+const input4 = [2, 1, 3, 2, 1];
+const sorted4 = InsertionSort(input4);
+console.log(sorted4); // output: [1, 1, 2, 2, 3]
+
+// Test case 5: Array with negative numbers
+const input5 = [-3, -1, -2, 0, -5, -4];
+const sorted5 = InsertionSort(input5);
+console.log(sorted5); // output: [-5, -4, -3, -2, -1, 0]
+
+
+```
+
+# Challenge Title
+
+TEMPLATE (Scroll up to see this weeks challenge)
 ## Whiteboard Process
 
 
