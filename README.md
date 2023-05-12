@@ -1996,6 +1996,207 @@ test('sortByTitle should sort movies alphabetically by title (ignoring leading "
 ```
 
 # Challenge Title
+Hash Tables
+## Whiteboard Process
+
+
+![Screenshot 2023-05-12 at 12 11 48 PM](https://github.com/AnthonyKeith15/401-DSA/assets/105818064/c26dc867-2f47-4fcb-a96c-8ae14e3f97da)
+
+
+
+
+## Approach & Efficiency
+
+Start by initializing a fixed-size array to store key-value pairs. The size of the array can be determined based on the expected number of elements or a predefined constant.
+
+When you want to store a key-value pair in the hashtable:
+
+Use a hash function to calculate a hash value for the given key. The hash function should take the key and produce a unique or near-unique integer value.
+Map the hash value to an index within the array using modulo division. This ensures that the index falls within the range of the array size.
+If the array at the calculated index is empty, create a new bucket or list and insert the key-value pair.
+If the array at the calculated index already has one or more key-value pairs, check if the key already exists within the bucket/list.
+If the key exists, replace the associated value with the new value.
+If the key does not exist, append the key-value pair to the end of the bucket/list.
+When you want to retrieve the value associated with a given key from the hashtable:
+
+Use the same hash function to calculate the hash value for the key.
+Map the hash value to the corresponding index within the array using modulo division.
+If the array at the calculated index is empty, the key does not exist in the hashtable.
+If the array at the calculated index has one or more key-value pairs, search for the key within the bucket/list.
+If the key is found, return the associated value.
+If the key is not found within the bucket/list, the key does not exist in the hashtable.
+When you want to check if a key exists in the hashtable:
+
+Use the same hash function to calculate the hash value for the key.
+Map the hash value to the corresponding index within the array using modulo division.
+If the array at the calculated index is empty, the key does not exist in the hashtable.
+If the array at the calculated index has one or more key-value pairs, search for the key within the bucket/list.
+If the key is found, return true.
+If the key is not found within the bucket/list, the key does not exist in the hashtable.
+When you want to retrieve all the keys from the hashtable:
+
+Traverse the entire array and collect all the keys from each non-empty bucket/list.
+Return the collection of keys.
+When you want to calculate the hash value for a given key:
+
+Use a hash function specific to the datatype of the key to transform the key into a unique or near-unique integer value.
+The hash function should produce the same hash value for the same key consistently.
+
+Space/Time Complextity: 
+
+The space complexity of the Hashtable class is O(n), where n is the number of key-value pairs stored in the hash table. This includes the space used for storing the keys and values in the array-based table.
+The Time complexity is O(1) on average, with O(n) worst case scenario
+
+## Solution
+```
+class HashTable {
+  constructor() {
+    this.size = 10; // initial size of the table
+    this.table = new Array(this.size); // create an array to store key-value pairs
+  }
+
+  _hash(key) {
+    // Calculate the hash value for the given key
+    let hash = 0;
+    for (let i = 0; i < key.length; i++) {
+      // convert each character of the key to its ASCII code and add it to the hash
+      hash = (hash + key.charCodeAt(i)) % this.size; // use modulo operator to ensure hash falls within table size
+    }
+    return hash; // return the calculated hash value
+  }
+
+  set(key, value) {
+    const index = this._hash(key); // get the index in the table for the given key
+    if (!this.table[index]) {
+      // if the index is empty, create a new array and add the key-value pair to it
+      this.table[index] = [[key, value]];
+    } else {
+      // if the index already has key-value pairs
+      for (let i = 0; i < this.table[index].length; i++) {
+        if (this.table[index][i][0] === key) {
+          // if the key already exists, update its value
+          this.table[index][i][1] = value;
+          return;
+        }
+      }
+      // if the key doesn't exist, add a new key-value pair to the existing array
+      this.table[index].push([key, value]);
+    }
+  }
+
+  get(key) {
+    const index = this._hash(key); // get the index in the table for the given key
+    if (!this.table[index]) {
+      // if the index is empty, return undefined
+      return undefined;
+    }
+    for (let i = 0; i < this.table[index].length; i++) {
+      if (this.table[index][i][0] === key) {
+        // if the key is found, return its value
+        return this.table[index][i][1];
+      }
+    }
+    // if the key is not found, return undefined
+    return undefined;
+  }
+
+  has(key) {
+    const index = this._hash(key); // get the index in the table for the given key
+    if (!this.table[index]) {
+      // if the index is empty, the key doesn't exist
+      return false;
+    }
+    for (let i = 0; i < this.table[index].length; i++) {
+      if (this.table[index][i][0] === key) {
+        // if the key is found, return true
+        return true;
+      }
+    }
+    // if the key is not found, return false
+    return false;
+  }
+
+  keys() {
+    const keys = [];
+    for (let i = 0; i < this.table.length; i++) {
+      if (this.table[i]) {
+        for (let j = 0; j < this.table[i].length; j++) {
+          keys.push(this.table[i][j][0]); // add each key to the keys array
+        }
+      }
+    }
+    return keys; // return the array of keys
+  }
+
+  hash(key) {
+    return this._hash(key); // return the hash value for the given key
+  }
+}
+
+
+```
+
+## Tests
+```
+const HashTable = require('./HashTable');
+
+describe('HashTable', () => {
+  let hashTable;
+
+  beforeEach(() => {
+    hashTable = new HashTable();
+  });
+
+  test('set and get', () => {
+    hashTable.set('name', 'John');
+    hashTable.set('age', 25);
+
+    expect(hashTable.get('name')).toBe('John');
+    expect(hashTable.get('age')).toBe(25);
+  });
+
+  test('set and get with collisions', () => {
+    hashTable.set('name', 'John');
+    hashTable.set('mane', 'Jane'); // collision with 'name'
+
+    expect(hashTable.get('name')).toBe('John');
+    expect(hashTable.get('mane')).toBe('Jane');
+  });
+
+  test('set and get with key replacement', () => {
+    hashTable.set('name', 'John');
+    hashTable.set('name', 'Jane'); // replace 'John' with 'Jane'
+
+    expect(hashTable.get('name')).toBe('Jane');
+  });
+
+  test('has', () => {
+    hashTable.set('name', 'John');
+    hashTable.set('age', 25);
+
+    expect(hashTable.has('name')).toBe(true);
+    expect(hashTable.has('city')).toBe(false);
+  });
+
+  test('keys', () => {
+    hashTable.set('name', 'John');
+    hashTable.set('age', 25);
+
+    const keys = hashTable.keys();
+    expect(keys).toContain('name');
+    expect(keys).toContain('age');
+  });
+
+  test('hash', () => {
+    const hash = hashTable.hash('name');
+    expect(typeof hash).toBe('number');
+  });
+});
+
+
+```
+
+# Challenge Title
 
 TEMPLATE (Scroll up to see this weeks challenge)
 ## Whiteboard Process
