@@ -1886,6 +1886,116 @@ console.log(sorted5); // output: [-5, -4, -3, -2, -1, 0]
 ```
 
 # Challenge Title
+Sorting
+
+## Whiteboard Process
+
+
+No whiteboard required
+
+
+
+## Approach & Efficiency
+i sorted the stuff as required
+Space/Time Complextity: 
+O(n)
+
+## Solution
+```
+// Sample movie objects
+const movies = [
+  {
+    title: "The Shawshank Redemption",
+    year: 1994,
+    genres: ["Drama"],
+  },
+  {
+    title: "Pulp Fiction",
+    year: 1994,
+    genres: ["Crime", "Drama"],
+  },
+  {
+    title: "Inception",
+    year: 2010,
+    genres: ["Action", "Sci-Fi"],
+  },
+  {
+    title: "The Godfather",
+    year: 1972,
+    genres: ["Crime", "Drama"],
+  },
+];
+
+// Sort movies by most recent year first
+function sortByYear(movies) {
+  return movies.sort((a, b) => b.year - a.year);
+}
+
+// Sort movies alphabetically by title, ignoring leading "A"s, "An"s, or "The"s
+function sortByTitle(movies) {
+  return movies.sort((a, b) => {
+    const titleA = a.title.replace(/^(A|An|The)\s+/i, '');
+    const titleB = b.title.replace(/^(A|An|The)\s+/i, '');
+    return titleA.localeCompare(titleB);
+  });
+}
+
+// Testing the sorting functions
+console.log(sortByYear(movies));
+console.log(sortByTitle(movies));
+
+
+```
+
+## Tests
+```
+// Sample test data
+const testMovies = [
+  {
+    title: "The Shawshank Redemption",
+    year: 1994,
+    genres: ["Drama"],
+  },
+  {
+    title: "Pulp Fiction",
+    year: 1994,
+    genres: ["Crime", "Drama"],
+  },
+  {
+    title: "Inception",
+    year: 2010,
+    genres: ["Action", "Sci-Fi"],
+  },
+  {
+    title: "The Godfather",
+    year: 1972,
+    genres: ["Crime", "Drama"],
+  },
+];
+
+// Test sortByYear function
+test('sortByYear should sort movies by most recent year first', () => {
+  const sortedMovies = sortByYear(testMovies);
+  const years = sortedMovies.map(movie => movie.year);
+  expect(years).toEqual([2010, 1994, 1994, 1972]);
+});
+
+// Test sortByTitle function
+test('sortByTitle should sort movies alphabetically by title (ignoring leading "A", "An", "The")', () => {
+  const sortedMovies = sortByTitle(testMovies);
+  const titles = sortedMovies.map(movie => movie.title);
+  expect(titles).toEqual([
+    "Inception",
+    "The Godfather",
+    "Pulp Fiction",
+    "The Shawshank Redemption",
+  ]);
+});
+
+
+```
+
+# Challenge Title
 
 TEMPLATE (Scroll up to see this weeks challenge)
 ## Whiteboard Process
