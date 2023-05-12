@@ -2000,7 +2000,8 @@ Hash Tables
 ## Whiteboard Process
 
 
-![Screenshot 2023-05-12 at 12 11 48 PM](https://github.com/AnthonyKeith15/401-DSA/assets/105818064/c26dc867-2f47-4fcb-a96c-8ae14e3f97da)
+![Screenshot 2023-05-12 at 12 11 48 PM](https://github.com/AnthonyKeith15/401-DSA/assets/105818064/661fc408-db12-4168-976b-09a53024eb0e)
+
 
 
 
