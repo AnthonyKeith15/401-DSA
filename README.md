@@ -1736,6 +1736,7 @@ Time: O(n)
 Space: O(w)
 
 ## Solution
+```
 class KNode {
   constructor(value, children = []) {
     this.value = value;
@@ -1763,8 +1764,6 @@ function fizzBuzzTree(root) {
   };
 
   return helper(root);
-}```
-
 ```
 
 ## Tests
