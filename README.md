@@ -2196,6 +2196,71 @@ describe('HashTable', () => {
 
 ```
 
+
+# Challenge Title
+
+hashmap-repeated-word
+
+## Whiteboard Process
+
+
+
+![Screenshot 2023-05-15 191104](https://github.com/AnthonyKeith15/401-DSA/assets/105818064/364235ab-ea30-42ef-8146-7d2a661b1d0d)
+
+
+
+## Approach & Efficiency
+
+The function takes the sentence, separates it into individual words, and then checks if any word is repeated. If it finds a word that shows up more than once, it tells you what that word is.
+
+Space/Time Complextity:
+
+Both space and time complexity are linear because at worst, the function has to go through the n number of words. This makes o(n) the time complexity
+
+## Solution
+```
+function repeatedWord(string) {
+  // Convert the string to lowercase and split it into an array of words using non-word characters as delimiters
+  const words = string.toLowerCase().split(/\W+/);
+  
+  // Create a new Map to store the encountered words
+  const wordMap = new Map();
+
+  // Iterate over each word in the words array
+  for (let word of words) {
+    // Check if the word is already present in the wordMap
+    if (wordMap.has(word)) {
+      // If the word is repeated, return it
+      return word;
+    }
+
+    // If the word is encountered for the first time, add it to the wordMap
+    wordMap.set(word, true);
+  }
+
+  // If no repeated word is found, return an empty string
+  return "";
+}
+```
+
+## Tests
+```
+describe('repeatedWord', () => {
+  it('should return the first repeated word in a string', () => {
+    const sentence = "It was a queer, sultry summer, the summer they electrocuted the Rosenbergs, and I didn’t know what I was doing in New York...";
+    const result = repeatedWord(sentence);
+    expect(result).toBe('summer');
+  });
+
+  it('should return an empty string if no repeated word is found', () => {
+    const sentence = "This is a test sentence without any repeated words.";
+    const result = repeatedWord(sentence);
+    expect(result).toBe('');
+  });
+});
+
+```
+
 # Challenge Title
 
 TEMPLATE (Scroll up to see this weeks challenge)
