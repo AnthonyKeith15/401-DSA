@@ -2261,6 +2261,358 @@ describe('repeatedWord', () => {
 
 ```
 
+# Challenge Title 32
+tree-intersection
+
+## Whiteboard Process
+
+![Screenshot 2023-05-20 at 11 16 12 AM](https://github.com/AnthonyKeith15/401-DSA/assets/105818064/1057816b-8c3a-418b-8e13-0890ad52f6ba)
+
+
+## Approach & Efficiency
+
+Create a HashMap data structure to store the values encountered while traversing the first tree.
+Traverse the first tree in any order (pre-order, in-order, or post-order) and add each encountered value to the HashMap.
+Create an empty set to store the intersection values.
+Traverse the second tree in the same order as the first tree.
+For each encountered value in the second tree, check if it exists in the HashMap.If the value is found in the HashMap, add it to the intersection set.
+After traversing the second tree, return the intersection set.
+
+Space/Time Complextity: 
+The time complexity of the algorithm is O(N + M), where N is the number of nodes in the first tree and M is the number of nodes in the second tree. The space complexity is O(N), as we store the values from the first tree in a HashMap.
+
+## Solution
+```
+// Define a binary tree node
+class TreeNode {
+  constructor(value) {
+    this.val = value;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+// Define the HashMap data structure
+class HashMap {
+  constructor() {
+    this.map = {};
+  }
+
+  add(key) {
+    this.map[key] = true;
+  }
+
+  has(key) {
+    return this.map.hasOwnProperty(key);
+  }
+}
+
+// Function to find intersection of values in two binary trees
+function tree_intersection(tree1, tree2) {
+  const valuesMap = new HashMap();
+  const result = new Set();
+
+  // Helper function to traverse the tree and add values to the map
+  function traverseAndAddValues(node) {
+    if (!node) return;
+
+    valuesMap.add(node.val);
+
+    traverseAndAddValues(node.left);
+    traverseAndAddValues(node.right);
+  }
+
+  // Traverse the first tree and add its values to the map
+  traverseAndAddValues(tree1);
+
+  // Helper function to traverse the second tree and check for intersection
+  function traverseAndCheckIntersection(node) {
+    if (!node) return;
+
+    if (valuesMap.has(node.val)) {
+      result.add(node.val);
+    }
+
+    traverseAndCheckIntersection(node.left);
+    traverseAndCheckIntersection(node.right);
+  }
+
+  // Traverse the second tree and check for intersection with the first tree
+  traverseAndCheckIntersection(tree2);
+
+  return result;
+}
+```
+
+## Tests
+```
+// Create tree 1
+const tree1 = new TreeNode(1);
+tree1.left = new TreeNode(2);
+tree1.right = new TreeNode(3);
+tree1.left.left = new TreeNode(4);
+tree1.left.right = new TreeNode(5);
+
+// Create tree 2
+const tree2 = new TreeNode(2);
+tree2.left = new TreeNode(4);
+tree2.right = new TreeNode(6);
+tree2.left.left = new TreeNode(1);
+tree2.left.right = new TreeNode(5);
+
+// Find the intersection of values in tree1 and tree2
+const intersectionSet = tree_intersection(tree1, tree2);
+
+
+```
+
+# Challenge Title 33
+
+Left Join
+
+## Whiteboard Process
+
+![Screenshot 2023-05-20 at 11 22 18 AM](https://github.com/AnthonyKeith15/401-DSA/assets/105818064/2a7b4621-b673-402e-8a25-a6965033a772)
+
+## Approach & Efficiency
+
+1. Create an empty result data structure (e.g., an array, list, or dictionary).
+
+2. Iterate through each key-value pair in the first hashmap (synonymsMap).
+
+   - Create a row (e.g., an array, list, or dictionary) to store the key and corresponding value.
+
+   - Append the value from the first hashmap to the row.
+
+   - Check if the key exists in the second hashmap (antonymsMap).
+
+     - If the key exists, append the corresponding value from the second hashmap to the row.
+
+     - If the key doesn't exist, append NULL or an appropriate placeholder to the row.
+
+   - Add the row to the result data structure.
+
+3. Return the result data structure.
+
+Space/Time Complextity: 
+
+The time complexity of the leftJoin function is O(N), where N is the number of elements in the first hashmap (synonymsMap), and the space complexity is O(N), as the result array grows linearly with the number of elements in the first hashmap.
+
+## Solution
+```
+function leftJoin(synonymsMap, antonymsMap) {
+  const result = [];
+
+  // Iterate through the keys of the first hashmap (synonymsMap)
+  for (let [key, value] of synonymsMap) {
+    const row = [key, value, null]; // Initialize the row with key and corresponding value from synonymsMap
+
+    if (antonymsMap.has(key)) {
+      // If the key exists in the second hashmap (antonymsMap)
+      row[2] = antonymsMap.get(key); // Append the value from antonymsMap to the row
+    }
+
+    result.push(row); // Add the row to the result array
+  }
+
+  return result;
+}
+```
+
+## Tests
+```
+INPUT
+synonymsMap:
+{
+  "happy": "joyful",
+  "sad": "unhappy",
+  "big": "large"
+}
+
+antonymsMap:
+{
+  "happy": "sad",
+  "sad": "happy",
+  "small": "big"
+}
+
+OUTPUT
+[  ["happy", "joyful", "sad"],
+  ["sad", "unhappy", "happy"],
+  ["big", "large", null]
+]
+
+```
+
+# Challenge Title 35
+
+Look at this.. Graaaaaaph
+
+## Whiteboard Process
+
+
+![Screenshot 2023-05-20 at 11 30 53 AM](https://github.com/AnthonyKeith15/401-DSA/assets/105818064/7213a7ed-381a-4e30-ac8f-babfa0d77a07)
+
+
+
+
+## Approach & Efficiency
+
+Create an instance of the Graph class.
+Add a node to the graph using the addNode method and verify that it was successfully added.
+Add an edge to the graph using the addEdge method and verify that the edge was successfully added.
+Retrieve all nodes from the graph using the getNodes method and verify that the collection contains all the nodes in the graph.
+Retrieve neighbors of a specific node using the getNeighbors method and verify that the collection contains the appropriate neighbors with the weights included.
+Get the size of the graph using the size method and verify that it returns the correct number of nodes.
+Create a graph with only one node and one edge, then verify that the node and edge are properly returned.
+
+Space/Time Complextity: 
+
+Adding a Node (addNode method): Time Complexity: O(1), Space Complexity: O(1)
+Adding an Edge (addEdge method): Time Complexity: O(1), Space Complexity: O(1)
+Retrieving Nodes (getNodes method): Time Complexity: O(N), Space Complexity: O(N)
+Retrieving Neighbors (getNeighbors method): Time Complexity: O(1), Space Complexity: O(1)
+Getting Size (size method): Time Complexity: O(1), Space Complexity: O(1)
+Note: N represents the number of nodes in the graph.
+
+## Solution
+```
+class Graph {
+  constructor() {
+    this.nodes = new Map();
+  }
+
+  addNode(value) {
+    const node = {
+      value: value,
+      edges: new Map()
+    };
+    this.nodes.set(value, node);
+    return node;
+  }
+
+  addEdge(node1, node2, weight = 0) {
+    if (!this.nodes.has(node1) || !this.nodes.has(node2)) {
+      throw new Error('Both nodes should already be in the graph.');
+    }
+
+    const edge = { node: node2, weight: weight };
+    this.nodes.get(node1).edges.set(node2, edge);
+  }
+
+  getNodes() {
+    return Array.from(this.nodes.values());
+  }
+
+  getNeighbors(node) {
+    if (!this.nodes.has(node)) {
+      return [];
+    }
+
+    const edges = this.nodes.get(node).edges;
+    return Array.from(edges.values());
+  }
+
+  size() {
+    return this.nodes.size;
+  }
+}
+
+```
+
+## Tests
+```
+// Import the necessary testing library (e.g., Jest)
+const { TestScheduler } = require('jest');
+
+// Import the Graph class implementation
+const Graph = require('./Graph');
+
+// Test case for adding a node to the graph
+test('Node can be successfully added to the graph', () => {
+  const graph = new Graph();
+  graph.addNode('A');
+  const nodes = graph.getNodes();
+  expect(nodes.length).toBe(1);
+  expect(nodes[0].value).toBe('A');
+});
+
+// Test case for adding an edge to the graph
+test('An edge can be successfully added to the graph', () => {
+  const graph = new Graph();
+  graph.addNode('A');
+  graph.addNode('B');
+  graph.addEdge('A', 'B', 5);
+  const neighbors = graph.getNeighbors('A');
+  expect(neighbors.length).toBe(1);
+  expect(neighbors[0].node).toBe('B');
+  expect(neighbors[0].weight).toBe(5);
+});
+
+// Test case for retrieving all nodes from the graph
+test('A collection of all nodes can be properly retrieved from the graph', () => {
+  const graph = new Graph();
+  graph.addNode('A');
+  graph.addNode('B');
+  graph.addNode('C');
+  const nodes = graph.getNodes();
+  expect(nodes.length).toBe(3);
+  expect(nodes.map(node => node.value)).toEqual(expect.arrayContaining(['A', 'B', 'C']));
+});
+
+// Test case for retrieving appropriate neighbors from the graph
+test('All appropriate neighbors can be retrieved from the graph', () => {
+  const graph = new Graph();
+  graph.addNode('A');
+  graph.addNode('B');
+  graph.addNode('C');
+  graph.addEdge('A', 'B', 5);
+  graph.addEdge('A', 'C', 10);
+  const neighbors = graph.getNeighbors('A');
+  expect(neighbors.length).toBe(2);
+  expect(neighbors.map(neighbor => neighbor.node)).toEqual(expect.arrayContaining(['B', 'C']));
+});
+
+// Test case for retrieving neighbors with weight included
+test('Neighbors are returned with the weight between nodes included', () => {
+  const graph = new Graph();
+  graph.addNode('A');
+  graph.addNode('B');
+  graph.addEdge('A', 'B', 5);
+  const neighbors = graph.getNeighbors('A');
+  expect(neighbors.length).toBe(1);
+  expect(neighbors[0].node).toBe('B');
+  expect(neighbors[0].weight).toBe(5);
+});
+
+// Test case for retrieving the proper size of the graph
+test('The proper size is returned, representing the number of nodes in the graph', () => {
+  const graph = new Graph();
+  graph.addNode('A');
+  graph.addNode('B');
+  graph.addNode('C');
+  const size = graph.size();
+  expect(size).toBe(3);
+});
+
+// Test case for a graph with only one node and edge
+test('A graph with only one node and edge can be properly returned', () => {
+  const graph = new Graph();
+  graph.addNode('A');
+  graph.addEdge('A', 'A', 10);
+  const nodes = graph.getNodes();
+  const neighbors = graph.getNeighbors('A');
+  const size = graph.size();
+  expect(nodes.length).toBe(1);
+  expect(neighbors.length).toBe(1);
+  expect(neighbors[0].node).toBe('A');
+  expect(neighbors[0].weight).toBe(10);
+  expect(size).toBe(1);
+});
+
+
+```
+
 # Challenge Title
 
 TEMPLATE (Scroll up to see this weeks challenge)
