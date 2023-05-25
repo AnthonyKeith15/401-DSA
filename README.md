@@ -2619,6 +2619,7 @@ graph-breadth-first
 
 ## Whiteboard Process
 
+![Screenshot 2023-05-25 114546](https://github.com/AnthonyKeith15/401-DSA/assets/105818064/10950a8e-b41d-4f11-992e-d49306e22c3a)
 
 
 
@@ -2762,84 +2763,187 @@ describe('Graph', () => {
 
 # Challenge Title 37
 
-TEMPLATE (Scroll up to see this weeks challenge)
+graph-business-trip
+
 ## Whiteboard Process
 
 
+![Screenshot 2023-05-25 115540](https://github.com/AnthonyKeith15/401-DSA/assets/105818064/cc9034ad-1bdf-4eea-83de-cfc88dd119e9)
 
 
 
 
 ## Approach & Efficiency
-
+Initialize a variable cost to 0.
+Iterate over the array of city names from index 0 to n-1, where n is the length of the array.
+For each iteration:
+Get the current city name and the next city name.
+Check if there is a direct flight available between the current city and the next city in the graph. If not, return null.
+Add the cost of the direct flight between the current city and the next city to the cost variable.
+Return the cost if the trip is possible. Otherwise, return null
 
 Space/Time Complextity: 
 
+The space complexity of the algorithm is O(1) as it doesn't use any additional data structures that grow with the input size, and the time complexity is O(n) where n is the number of cities in the array, as it iterates through the array once to determine the cost of the trip.
 
 ## Solution
 ```
+function businessTrip(graph, cities) {
+  let cost = 0;
+  for (let i = 0; i < cities.length - 1; i++) {
+    let currentCity = cities[i];
+    let nextCity = cities[i + 1];
+    if (!(currentCity in graph) || !(nextCity in graph[currentCity])) {
+      return null; // Direct flight not available
+    }
+    cost += graph[currentCity][nextCity];
+  }
+  return cost;
+}
 
 ```
 
 ## Tests
 ```
+const { businessTrip } = require('./your-file-name');
+
+describe('businessTrip', () => {
+  // Define the graph for testing
+  const graph = {
+    'A': {'B': 100, 'C': 200},
+    'B': {'A': 100, 'C': 50},
+    'C': {'A': 200, 'B': 50}
+  };
+
+  it('should return the cost of the trip when it is possible', () => {
+    expect(businessTrip(graph, ['A', 'B', 'C'])).toBe(150);
+    expect(businessTrip(graph, ['A', 'C', 'B'])).toBe(150);
+    expect(businessTrip(graph, ['C', 'A', 'B'])).toBe(250);
+  });
+
+  it('should return null when the trip is not possible', () => {
+    expect(businessTrip(graph, ['A', 'C', 'D'])).toBeNull();
+    expect(businessTrip(graph, ['A', 'D', 'B'])).toBeNull();
+    expect(businessTrip(graph, ['B', 'C', 'A'])).toBeNull();
+  });
+
+  it('should return 0 cost for an empty trip', () => {
+    expect(businessTrip(graph, [])).toBe(0);
+  });
+
+  it('should return null for a trip with only one city', () => {
+    expect(businessTrip(graph, ['A'])).toBeNull();
+    expect(businessTrip(graph, ['B'])).toBeNull();
+    expect(businessTrip(graph, ['C'])).toBeNull();
+  });
+});
 
 
 ```
 
 # Challenge Title 38
 
-TEMPLATE (Scroll up to see this weeks challenge)
-## Whiteboard Process
-
-
-
-
-
-
-## Approach & Efficiency
-
-
-Space/Time Complextity: 
-
-
-## Solution
-```
-
-```
-
-## Tests
-```
-
-
-```
-
-# Challenge Title 39
-
+graph-depth-first
 
 ## Whiteboard Process
 
 
 
+![Screenshot 2023-05-25 120433](https://github.com/AnthonyKeith15/401-DSA/assets/105818064/8f03885b-2853-4b87-b484-4958bb45ebd1)
 
 
 
 ## Approach & Efficiency
 
+Initialize an empty set visited to keep track of visited nodes.
+Initialize an empty collection (e.g., array, list) collection to store the nodes in their pre-order depth-first traversal order.
+Define a recursive function dfs that takes a node as an argument.
+In the dfs function:
+Add the current node to the visited set.
+Add the value of the current node to the collection.
+Iterate through each neighbor of the current node:
+If the neighbor has not been visited, recursively call dfs on the neighbor.
+Call the dfs function with the starting node as the argument.
+Return the collection.
 
-Space/Time Complextity: 
+Space/Time Complextity:
 
+The time complexity of the depthFirst method is O(V + E), where V represents the number of vertices (nodes) in the graph and E represents the number of edges. This is because in the worst case, the method may visit all vertices and edges in the graph once during the depth-first traversal.
 
 ## Solution
 ```
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.neighbors = [];
+  }
+}
+
+class Graph {
+  constructor() {
+    this.nodes = [];
+  }
+
+  addNode(value) {
+    this.nodes.push(new Node(value));
+  }
+
+  addEdge(node1, node2) {
+    node1.neighbors.push(node2);
+    node2.neighbors.push(node1);
+  }
+
+  depthFirst(startNode) {
+    const visited = new Set();
+    const collection = [];
+
+    function dfs(node) {
+      visited.add(node);
+      collection.push(node.value);
+
+      for (const neighbor of node.neighbors) {
+        if (!visited.has(neighbor)) {
+          dfs(neighbor);
+        }
+      }
+    }
+
+    dfs(startNode);
+    return collection;
+  }
+}
 
 ```
 
 ## Tests
 ```
+const { Graph } = require('./your-file-name');
+
+describe('Graph', () => {
+  it('should perform depth-first traversal correctly', () => {
+    const graph = new Graph();
+
+    const node1 = graph.addNode('A');
+    const node2 = graph.addNode('B');
+    const node3 = graph.addNode('C');
+    const node4 = graph.addNode('D');
+    const node5 = graph.addNode('E');
+
+    graph.addEdge(node1, node2);
+    graph.addEdge(node1, node3);
+    graph.addEdge(node2, node4);
+    graph.addEdge(node3, node4);
+    graph.addEdge(node3, node5);
+    
+    const result = graph.depthFirst(node1);
+
+    expect(result).toEqual(['A', 'B', 'D', 'C', 'E']);
+  });
+});
 
 
 ```
+
 
 # Challenge Title
 
