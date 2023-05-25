@@ -2613,6 +2613,234 @@ test('A graph with only one node and edge can be properly returned', () => {
 
 ```
 
+# Challenge Title 36
+
+graph-breadth-first
+
+## Whiteboard Process
+
+
+
+
+
+
+## Approach & Efficiency
+1. Create a queue and an empty visited set.
+2. Enqueue the starting node into the queue and add it to the visited set.
+3. While the queue is not empty:
+     - Dequeue a node from the queue and process it.
+     - Add the dequeued node to the collection of visited nodes.
+     - Enqueue all unvisited neighbors of the dequeued node into the queue and add them to the visited set.
+4. Return the collection of visited nodes.
+
+
+Space/Time Complextity: 
+The space complexity of the breadthFirst method is O(V), where V is the number of nodes in the graph, and the time complexity is O(V + E), where E is the total number of edges in the graph.
+
+## Solution
+```
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.neighbors = [];
+  }
+}
+
+class Graph {
+  constructor() {
+    this.nodes = [];
+  }
+
+  breadthFirst(startNode) {
+    const visited = new Set();
+    const queue = [startNode];
+    const visitedOrder = [];
+
+    visited.add(startNode);
+
+    while (queue.length > 0) {
+      const currentNode = queue.shift();
+      visitedOrder.push(currentNode);
+
+      for (const neighbor of currentNode.neighbors) {
+        if (!visited.has(neighbor)) {
+          visited.add(neighbor);
+          queue.push(neighbor);
+        }
+      }
+    }
+
+    return visitedOrder;
+  }
+}
+
+// Example usage:
+
+// Create some nodes
+const nodeA = new Node('A');
+const nodeB = new Node('B');
+const nodeC = new Node('C');
+const nodeD = new Node('D');
+const nodeE = new Node('E');
+
+// Define connections between nodes
+nodeA.neighbors.push(nodeB, nodeC);
+nodeB.neighbors.push(nodeD, nodeE);
+nodeC.neighbors.push(nodeE);
+nodeE.neighbors.push(nodeD);
+
+// Create a graph and add the nodes
+const graph = new Graph();
+graph.nodes.push(nodeA, nodeB, nodeC, nodeD, nodeE);
+
+// Perform breadth-first search starting from nodeA
+const visitedNodes = graph.breadthFirst(nodeA);
+
+// Display the visited nodes in order
+console.log(visitedNodes.map(node => node.value));
+
+```
+
+## Tests
+```
+const { Graph, Node } = require('./graph');
+
+describe('Graph', () => {
+  describe('breadthFirst', () => {
+    it('should return the correct order of visited nodes in a simple graph', () => {
+      // Create nodes
+      const nodeA = new Node('A');
+      const nodeB = new Node('B');
+      const nodeC = new Node('C');
+      const nodeD = new Node('D');
+      const nodeE = new Node('E');
+
+      // Define connections between nodes
+      nodeA.neighbors.push(nodeB, nodeC);
+      nodeB.neighbors.push(nodeD, nodeE);
+      nodeC.neighbors.push(nodeE);
+      nodeE.neighbors.push(nodeD);
+
+      // Create a graph and add the nodes
+      const graph = new Graph();
+      graph.nodes.push(nodeA, nodeB, nodeC, nodeD, nodeE);
+
+      // Perform breadth-first search starting from nodeA
+      const visitedNodes = graph.breadthFirst(nodeA);
+
+      // Verify the visited nodes are in the correct order
+      expect(visitedNodes.map(node => node.value)).toEqual(['A', 'B', 'C', 'D', 'E']);
+    });
+
+    it('should return the correct order of visited nodes in a disconnected graph', () => {
+      // Create nodes
+      const nodeA = new Node('A');
+      const nodeB = new Node('B');
+      const nodeC = new Node('C');
+      const nodeD = new Node('D');
+      const nodeE = new Node('E');
+
+      // Define connections between nodes
+      nodeA.neighbors.push(nodeB, nodeC);
+      nodeD.neighbors.push(nodeE);
+
+      // Create a graph and add the nodes
+      const graph = new Graph();
+      graph.nodes.push(nodeA, nodeB, nodeC, nodeD, nodeE);
+
+      // Perform breadth-first search starting from nodeA
+      const visitedNodes = graph.breadthFirst(nodeA);
+
+      // Verify the visited nodes are in the correct order
+      expect(visitedNodes.map(node => node.value)).toEqual(['A', 'B', 'C']);
+    });
+  });
+});
+
+
+```
+
+# Challenge Title 37
+
+TEMPLATE (Scroll up to see this weeks challenge)
+## Whiteboard Process
+
+
+
+
+
+
+## Approach & Efficiency
+
+
+Space/Time Complextity: 
+
+
+## Solution
+```
+
+```
+
+## Tests
+```
+
+
+```
+
+# Challenge Title 38
+
+TEMPLATE (Scroll up to see this weeks challenge)
+## Whiteboard Process
+
+
+
+
+
+
+## Approach & Efficiency
+
+
+Space/Time Complextity: 
+
+
+## Solution
+```
+
+```
+
+## Tests
+```
+
+
+```
+
+# Challenge Title 39
+
+
+## Whiteboard Process
+
+
+
+
+
+
+## Approach & Efficiency
+
+
+Space/Time Complextity: 
+
+
+## Solution
+```
+
+```
+
+## Tests
+```
+
+
+```
+
 # Challenge Title
 
 TEMPLATE (Scroll up to see this weeks challenge)
